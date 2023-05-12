@@ -8,8 +8,11 @@ export default function Home() {
   const [sendAddress, setSendAddress] = useState();
   const [amount, setAmount] = useState();
   const [balance, setBalance] = useState();
+  const [fetch, setFetch] = useState(false);
+  const [transfering, setTransfering] = useState(false);
 
   async function address() {
+    setFetch(true);
     const simpleAccount = await Presets.Builder.SimpleAccount.init(
       new ethers.Wallet(config.signingKey),
       config.rpcUrl,
@@ -19,17 +22,22 @@ export default function Home() {
     const address = simpleAccount.getSender();
     console.log(`SimpleAccount address: ${address}`);
     setuserAddress(address);
+    setFetch(false);
   }
 
   async function balanceOfAddress() {
+    setFetch(true);
     // const provider = new EtherscanProvider('polygon-mumbai');
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     // let provider = ethers.getDefaultProvider(["mumbai",]);
     let bal = await provider.getBalance(userAddress);
-    setBalance(bal.toString());
+    console.log(bal.toString());
+    setBalance(ethers.utils.formatEther(bal.toString()));
+    setFetch(false)
   }
 
   async function transfer() {
+    setTransfering(true)
     let t = sendAddress;
     let amt = amount;
     let opts = "";
@@ -62,6 +70,7 @@ export default function Home() {
     console.log("Waiting for transaction...");
     const ev = await res.wait();
     console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+    setTransfering(false)
   }
 
 
@@ -70,7 +79,8 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">Create the Account Abstracted Wallet</h1>
       <div className="bg-gray-100 text-center py-10 rounded-lg mb-10 p-10">
         {!userAddress ?
-          <button className="bg-blue-500 hover:bg-blue-600 my-10  text-white py-2 px-4 rounded-lg " onClick={address}> Connect Wallet
+          <button className="bg-blue-500 hover:bg-blue-600 my-10  text-white py-2 px-4 rounded-lg " onClick={address}>
+            {fetch ? "Connecting..." : "Connect Wallet"}
           </button>
           :
           <>
@@ -81,54 +91,57 @@ export default function Home() {
             </div>
             {balance ?
               <div className=" flex justify-center items-center items">
-                <h2 className="text-lg font-bold mx-10">Balance is <i className=" text-xl ml-5">{balance}</i></h2>
-                <button className="bg-green-500 hover:bg-green-600 ml-auto m-5 text-white py-2 px-4 rounded-lg mb-4" onClick={balanceOfAddress}>New Balance
+                <h2 className="text-lg font-bold mx-10">Balance is <i className=" text-xl ml-5">{balance} Ether</i></h2>
+                <button className="bg-green-500 hover:bg-green-600 ml-auto m-5 text-white py-2 px-4 rounded-lg mb-4" onClick={balanceOfAddress}>{fetch ? "Fetching..." : "New Balance"}
                 </button>
               </div>
               :
-              <button className=" bg-blue-500 hover:bg-blue-600 my-5 text-white py-2 px-4 rounded-lg " onClick={balanceOfAddress}>Get Balance</button>
+              <button className=" bg-blue-500 hover:bg-blue-600 my-5 text-white py-2 px-4 rounded-lg " onClick={balanceOfAddress}>{fetch ? "Fetching..." : "Get Balance"}</button>
             }
           </>
         }
       </div>
-      <h2 className="text-2xl font-bold mb-4">Transfer Funds with the Wallet</h2>
-      <div className="bg-gray-100 p-10 py-10 rounded-lg mb-10">
-        <form >
-          <div className="mb-4 mx-10">
-            <label className="block font-bold mb-2" htmlFor="send-address">
-              Address
-            </label>
-            <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-              id="send-address"
-              type="text"
-              name="sendAddress"
-              value={sendAddress}
-              onChange={(e) => setSendAddress(e.target.value)}
-              placeholder="0x1234..."
-            />
+      {userAddress &&
+        <>
+          <h2 className="text-2xl font-bold mb-4">Transfer Funds with the Wallet</h2>
+          <div className="bg-gray-100 p-10 py-10 rounded-lg mb-10">
+            <form >
+              <div className="mb-4 mx-10">
+                <label className="block font-bold mb-2" htmlFor="send-address">
+                  Address
+                </label>
+                <input
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+                  id="send-address"
+                  type="text"
+                  name="sendAddress"
+                  value={sendAddress}
+                  onChange={(e) => setSendAddress(e.target.value)}
+                  placeholder="0x1234..."
+                />
+              </div>
+              <div className="mb-4 mx-10">
+                <label className="block font-bold mb-2" htmlFor="amount">
+                  Amount
+                </label>
+                <input
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+                  id="amount"
+                  type="text"
+                  name="amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.0"
+                />
+              </div>
+            </form>
+            <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={transfer}>
+              {transfering ? "Transacting..." : "Send Transaction"}
+            </button>
           </div>
-          <div className="mb-4 mx-10">
-            <label className="block font-bold mb-2" htmlFor="amount">
-              Amount
-            </label>
-            <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-              id="amount"
-              type="text"
-              name="amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.0"
-            />
-          </div>
-        </form>
-        <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={transfer}>
-          Send Transaction
-        </button>
-      </div>
+        </>
+      }
     </div>
-
   );
 }
 
