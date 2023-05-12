@@ -27,9 +27,10 @@ export default function Home() {
 
   async function balanceOfAddress() {
     setFetch(true);
-    // const provider = new EtherscanProvider('polygon-mumbai');
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    // let provider = ethers.getDefaultProvider(["mumbai",]);
+    // const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const alchemyApiKey = process.env.API_KEY;
+    const providerUrl = `https://eth-mumbai.alchemyapi.io/v2/${alchemyApiKey}`;
+    const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
     let bal = await provider.getBalance(userAddress);
     console.log(bal.toString());
     setBalance(ethers.utils.formatEther(bal.toString()));
