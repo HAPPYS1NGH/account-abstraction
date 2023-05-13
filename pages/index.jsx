@@ -1,3 +1,7 @@
+import Account from "@/components/Account";
+import Header from "@/components/Header";
+import Receive from "@/components/Receive";
+import Send from "@/components/Send";
 import { ethers } from "ethers";
 import { useState } from "react";
 import { Client, Presets } from "userop";
@@ -134,7 +138,11 @@ export default function Home() {
 
 
   return (
-    <div className=" mx-auto p-20 bg-gray-100 rounded-lg h-full">
+    <div className=" mx-44 p-20 bg-gray-100 rounded-lg h-full">
+      <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
+      <Account balance={balance} address={userAddress} privateKey={privateKey} />
+      <Receive />
+      <Send balance={balance} sendAddress={sendAddress} amount={amount} config={config} />
       <h1 className="text-2xl font-bold mb-4">Create the Account Abstracted Wallet</h1>
       <div className="bg-white text-center py-10 rounded-lg mb-10 p-10">
         {!userAddress ?
