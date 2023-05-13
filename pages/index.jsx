@@ -11,6 +11,7 @@ export default function Home() {
       console.log("In if of 1st paa " + privateKeyAA);
     }
   }
+
   const [userAddress, setuserAddress] = useState("");
   const [privateKey, setPrivateKey] = useState(privateKeyAA);
   const [importedPrivateKey, setImportedPrivateKey] = useState();
@@ -24,7 +25,7 @@ export default function Home() {
   console.log("Private Key below state " + privateKey);
 
   const [config, setConfig] = useState({
-    rpcUrl: `https://api.stackup.sh/v1/node/${process.env.API_KEY}`,
+    rpcUrl: `https://api.stackup.sh/v1/node/${process.env.NEXT_PUBLIC_API_KEY}`,
     signingKey: privateKey,
     entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
     simpleAccountFactory: "0x9406Cc6185a346906296840746125a0E44976454",
@@ -65,7 +66,7 @@ export default function Home() {
   async function balanceOfAddress() {
     setFetch(true);
     // const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const alchemyApiKey = process.env.API_KEY;
+    // const alchemyApiKey = process.env.API_KEY;
     // const providerUrl = `https://eth-mumbai.alchemyapi.io/v2/${alchemyApiKey}`;
     const provider = new ethers.providers.JsonRpcProvider("https://rpc-mumbai.maticvigil.com");
     let bal = await provider.getBalance(userAddress);
@@ -85,6 +86,7 @@ export default function Home() {
     const address = simpleAccount.getSender();
     console.log(`SimpleAccount address: ${address}`);
     setuserAddress(address);
+    setPrivateKey(importedPrivateKey)
     setFetch(false);
   }
 
@@ -127,15 +129,14 @@ export default function Home() {
 
   function exportPrivateKey() {
     setIsToggled(prevToggle => !prevToggle)
-    console.log(process.env.NEXT_PUBLIC_API_KEY)
   }
 
 
 
   return (
-    <div className=" mx-auto m-10 p-20 bg-white rounded-lg shadow-lg">
+    <div className=" mx-auto p-20 bg-gray-100 rounded-lg h-full">
       <h1 className="text-2xl font-bold mb-4">Create the Account Abstracted Wallet</h1>
-      <div className="bg-gray-100 text-center py-10 rounded-lg mb-10 p-10">
+      <div className="bg-white text-center py-10 rounded-lg mb-10 p-10">
         {!userAddress ?
           <button className="bg-blue-500 hover:bg-blue-600 my-10  text-white py-2 px-4 rounded-lg " onClick={address}>
             {fetch ? "Connecting..." : "Connect Wallet"}
@@ -205,6 +206,24 @@ export default function Home() {
         <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={exportPrivateKey}>Export Private Key
         </button>
         {isToggled && <h1 >{privateKey}</h1>}
+      </div>
+      <div>
+        <div className="mb-4 mx-10">
+          <label className="block font-bold mb-2" htmlFor="walletFromPrivateKey">
+            Amount
+          </label>
+          <input
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+            id="importedPrivateKey"
+            type="text"
+            name="importedPrivateKey"
+            value={importedPrivateKey}
+            onChange={(e) => setImportedPrivateKey(e.target.value)}
+            placeholder="0.0"
+          />
+        </div>
+        <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={importUsingPrivateKey}>Import new Wallet through Private Key
+        </button>
       </div>
     </div>
   );
