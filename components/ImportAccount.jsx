@@ -16,31 +16,53 @@ function ImportAccount({ config, setPrivateKey, privateKey, toggleImportAccount 
         }
     }
     return (
-        <div className='fixed top-0 left-0  bg-white rounded-lg shadow-lg p-4 w-full h-full justify-center'>
-            <h1 className='text-2xl p-10 mt-20'>Enter your private Key</h1>
-            <div className="mb-4 mx-10">
-                <label className="block font-bold mb-2" htmlFor="walletFromPrivateKey">
-                    Key
-                </label>
-                <input
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-                    id="importedPrivateKey"
-                    type="text"
-                    name="importedPrivateKey"
-                    value={importedPrivateKey}
-                    onChange={(e) => setImportedPrivateKey(e.target.value)}
-                    placeholder="2b83e...."
-                />
-            </div>
+        <div class="backdrop-filter backdrop-blur-sm fixed inset-0 z-50">
+            <div className='fixed backdrop-filter backdrop-blur top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 max-w-md w-full'>
+                <h1 className='text-lg font-bold mb-6'>Import Account</h1>
+                <div className="mb-4">
+                    <label className="block font-bold mb-2" htmlFor="importedPrivateKey">
+                        Enter Private Key
+                    </label>
+                    <input
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
+                        id="importedPrivateKey"
+                        type="text"
+                        name="importedPrivateKey"
+                        value={importedPrivateKey}
+                        onChange={(e) => setImportedPrivateKey(e.target.value)}
+                        placeholder="2b83e...."
+                    />
+                </div>
+                {fetch ? (
+                    <div className='flex flex-col'>
+                        <p className='text-green-500 font-bold mb-6'>Account imported successfully!</p>
+                        <div className='flex justify-end'>
+                            <button
+                                onClick={toggleImportAccount}
+                                className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg mr-4'
+                            >
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className='flex justify-end mt-6'>
+                        <button
+                            onClick={toggleImportAccount}
+                            className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg mr-4'
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg'
+                            onClick={importUsingPrivateKey}
+                            disabled={!importedPrivateKey}
+                        >
+                            Import
+                        </button>
+                    </div>
+                )}
 
-            <div className='flex justify-center gap-4'>
-                {fetch ?
-                    <h1>Imported Successfully</h1>
-                    :
-                    <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={importUsingPrivateKey}>Import new Wallet through Private Key
-                    </button>
-                }
-                <button onClick={toggleImportAccount} className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg'>Take me Back</button>
             </div>
         </div>
     )

@@ -17,17 +17,45 @@ function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey }) {
         }
     }
     return (
-        <div className='fixed top-0 left-0  bg-white rounded-lg shadow-lg p-4 w-full h-full justify-center'>
-            <h1 className='text-2xl p-10 mt-20'>Do you really want to create a New Account?</h1>
-            <div className='flex justify-center gap-4'>
-                {created ?
-                    <h1>Wallet Created Successfully</h1>
-                    :
-                    <button className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg' onClick={createNewWallet}>Create</button>
-                }
-                <button onClick={toggleNewAccount} className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg'>Take me Back</button>
+        <div class="backdrop-filter backdrop-blur-sm fixed inset-0 z-50">
+            <div className='fixed backdrop-filter backdrop-blur top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 max-w-md w-full'>
+                {created ? (
+                    <div className='flex flex-col'>
+                        <h1 className='text-xl font-bold mb-6'>Create New Wallet</h1>
+                        <p className='text-green-500 font-bold mb-6'>Wallet created successfully!</p>
+                        <div className='flex justify-end'>
+                            <button
+                                onClick={toggleNewAccount}
+                                className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg ml-4'
+                            >
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div>
+                        <h1 className='text-xl font-bold mb-6'>Create New Wallet</h1>
+                        <h1 className='text-md mb-6'>
+                            Do you really want to create a New Account?
+                        </h1>
+                        <button
+                            className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg'
+                            onClick={createNewWallet}
+                        >
+                            Create
+                        </button>
+                        <button
+                            onClick={toggleNewAccount}
+                            className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg ml-4'
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
+
+
     )
 }
 

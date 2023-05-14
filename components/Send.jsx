@@ -2,14 +2,16 @@ import React from 'react'
 import { ethers } from "ethers";
 import { useState } from "react";
 import { Client, Presets } from "userop";
-function Send({ config, balance }) {
+function Send({ config, balance, init }) {
 
     const [sendAddress, setSendAddress] = useState();
     const [amount, setAmount] = useState();
     const [transferFunds, setTransferFunds] = useState(false);
     const [popUp, setPopUp] = useState(false);
+    const [transactionHash, setTransactionHash] = useState()
     function togglePopUp() {
         setPopUp(prev => !prev)
+        setTransactionHash();
     }
     async function transfer() {
         setTransferFunds(true)
@@ -45,63 +47,79 @@ function Send({ config, balance }) {
         console.log("Waiting for transaction...");
         const ev = await res.wait();
         console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+        setTransactionHash(ev.transactionHash);
+        init()
         setTransferFunds(false)
     }
     return (
         <div className=''>
-            {
-                !popUp ?
-                    <button className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg' onClick={togglePopUp}>Send</button>
-                    :
-                    <button className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg' >Verify..</button>
-            }
-            {
-                popUp &&
-                <div className='fixed top-0 left-0  bg-white rounded-lg shadow-lg p-4 w-full h-full justify-center'>
-                    <div className='flex'>
-                        <h2 className="text-2xl font-bold mb-4">Send your Funds</h2>
-                        <button className='ml-auto' onClick={togglePopUp}>Close</button>
-                    </div>
-
-                    <div className="bg-gray-100 p-10 py-10 rounded-lg mb-10">
-                        <form >
-                            <div className="mb-4 mx-10">
-                                <label className="block font-bold mb-2" htmlFor="send-address">
-                                    Address
-                                </label>
-                                <input
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-                                    id="send-address"
-                                    type="text"
-                                    name="sendAddress"
-                                    value={sendAddress}
-                                    onChange={(e) => setSendAddress(e.target.value)}
-                                    placeholder="0x1234..."
-                                />
+            {!popUp ? (
+                <button className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg' onClick={togglePopUp}>Send</button>
+            ) : (
+                <div className='fixed top-0 left-0 right-0 bottom-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50'>
+                    <div className='bg-white w-full sm:max-w-md rounded-lg overflow-hidden shadow-xl'>
+                        <div className='p-4'>
+                            <div className='flex items-center justify-between'>
+                                <h2 className='text-2xl font-bold mb-4'>Send your Funds</h2>
+                                <button className='text-gray-500 hover:text-gray-800' onClick={togglePopUp}>
+                                    <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                                    </svg>
+                                </button>
                             </div>
-                            <div className="mb-4 mx-10">
-                                <label className="block font-bold mb-2" htmlFor="amount">
-                                    Amount
-                                </label>
-                                <input
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500"
-                                    id="amount"
-                                    type="text"
-                                    name="amount"
-                                    value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
-                                    placeholder="0.0"
-                                />
-                            </div>
-                        </form>
-                        <h2>Your current balance is {balance}</h2>
-                        <button className="bg-blue-500 mx-10 my-5 hover:bg-blue-600 text-white py-2 px-4 rounded-lg" onClick={transfer}>
-                            {transferFunds ? "Transacting..." : "Send Transaction"}
-                        </button>
+                            {transactionHash
+                                ?
+                                <div className="">
+                                    <p className="font-semibold ">Transaction Hash:</p>
+                                    <p className="break-all text-green-600">{transactionHash}</p>
+                                    <a href={`https://mumbai.polygonscan.com/tx/${transactionHash}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline mt-3 inline-block">View on PolygonScan</a>
+                                </div>
+                                :
+                                <form>
+                                    <div className='mb-4'>
+                                        <label className='block font-bold mb-2' htmlFor='send-address'>
+                                            Address
+                                        </label>
+                                        <input
+                                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500'
+                                            id='send-address'
+                                            type='text'
+                                            name='sendAddress'
+                                            value={sendAddress}
+                                            onChange={(e) => setSendAddress(e.target.value)}
+                                            placeholder='0x1234...'
+                                        />
+                                    </div>
+                                    <div className='mb-4'>
+                                        <label className='block font-bold mb-2' htmlFor='amount'>
+                                            Amount
+                                        </label>
+                                        <input
+                                            className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500'
+                                            id='amount'
+                                            type='text'
+                                            name='amount'
+                                            value={amount}
+                                            onChange={(e) => setAmount(e.target.value)}
+                                            placeholder='0.0'
+                                        />
+                                    </div>
+                                    <div className='text-gray-500 text-sm mb-4'>Your current balance is {balance}</div>
+                                    <button
+                                        className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg w-full'
+                                        onClick={transfer}
+                                        disabled={transferFunds}
+                                    >
+                                        {transferFunds ? 'Transacting...' : 'Send Transaction'}
+                                    </button>
+                                </form>
+                            }
+                        </div>
                     </div>
                 </div>
-            }
+            )}
         </div>
+
     )
 }
 
