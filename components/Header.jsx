@@ -18,7 +18,7 @@ const Header = (props) => {
                     className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full focus:outline-none"
                 >
                     <Image
-                        src="/../public/images/profile.jpg"
+                        src="/images/user.png"
                         alt="Profile"
                         width={40}
                         height={40}

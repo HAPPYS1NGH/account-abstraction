@@ -109,7 +109,6 @@ export default function Home() {
   return (
 
     <div className="">
-
       <>
         <div className="mx-44 p-20 bg-gray-100 rounded-lg h-full">
           <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
@@ -120,8 +119,6 @@ export default function Home() {
           </div>
         </div>
       </>
-
-
     </div>
 
   );
