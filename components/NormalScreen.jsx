@@ -9,11 +9,7 @@ import { Client, Presets } from "userop";
 
 export default function NormalScreen() {
     let privateKeyAA;
-    let isFirstVisit
-    if (typeof window !== 'undefined') {
-        isFirstVisit = localStorage.getItem('firstVisit') === null;
-    }
-
+    const [refresh, setRefresh] = useState(false)
     const [userAddress, setuserAddress] = useState("");
     const [privateKey, setPrivateKey] = useState();
     const [sendAddress, setSendAddress] = useState();
@@ -32,6 +28,7 @@ export default function NormalScreen() {
     })
 
     async function init() {
+        setRefresh(true)
         if (typeof window !== 'undefined') {
             privateKeyAA = localStorage.getItem('privateKeyAA');
 
@@ -46,11 +43,9 @@ export default function NormalScreen() {
             console.log("Init P k " + privateKey);
             await address()
             await balanceOfAddress()
+            setRefresh(false)
         }
     }
-    // console.log("Private Key below state " + privateKey);
-
-
 
     async function address() {
         setFetch(true);
@@ -91,46 +86,29 @@ export default function NormalScreen() {
             setFetch(false);
         }
     }
-    // useEffect(() => {
-    //     if (!isFirstVisit) {
-    //         init()
-    //     }
-    // }, [userAddress, balance, privateKey])
+    useEffect(() => {
+        init()
+    }, [userAddress, balance, privateKey])
 
-    // useEffect(() => {
-    //     if (!isFirstVisit) {
-    //         setConfig(prevConfig => {
-    //             return {
-    //                 ...prevConfig,
-    //                 signingKey: privateKey
-    //             }
-    //         })
-    //     }
-    // }, [privateKey])
-
-
-    return (
-
-        <div className="">
-            {isFirstVisit ?
-                <FirstScreen />
-                :
-                <div>
-                    <button onClick={init}>click</button>
-                    <p>{privateKey}</p>
-                    <div className="mx-44 p-20 bg-gray-100 rounded-lg h-full">
-                        <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
-                        <Account balance={balance} address={userAddress} privateKey={privateKey} />
-                        <div className="flex flex-wrap justify-center gap-14">
-                            <Send balance={balance} sendAddress={sendAddress} amount={amount} config={config} />
-                            <Receive />
-                        </div>
-                    </div>
-                </div>
+    useEffect(() => {
+        setConfig(prevConfig => {
+            return {
+                ...prevConfig,
+                signingKey: privateKey
             }
-
+        })
+    }, [privateKey])
+    return (
+        <div className="mx-44 bg-gray-100 rounded-lg h-full">
+            <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
+            <div className="bg-white p-10 rounded-xl shadow-lg ">
+                <Account balance={balance} refresh={refresh} address={userAddress} privateKey={privateKey} init={init} />
+                <div className="flex flex-wrap justify-center gap-14 pt-10">
+                    <Send balance={balance} sendAddress={sendAddress} amount={amount} config={config} init={init} />
+                    <Receive />
+                </div>
+            </div>
         </div>
-
     );
 }
 

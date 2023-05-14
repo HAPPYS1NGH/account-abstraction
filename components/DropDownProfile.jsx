@@ -38,7 +38,7 @@ function DropDownProfile(props) {
             <div className='p-4 flex items-center'>
                 <div className='bg-gray-200 rounded-full p-1'>
                     <Image
-                        src='/images/profile.jpg'
+                        src='/images/user.png'
                         alt='Profile Pic'
                         height={30}
                         width={30}
