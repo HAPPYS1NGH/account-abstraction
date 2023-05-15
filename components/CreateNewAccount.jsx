@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { ethers } from "ethers";
 
-function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey }) {
+function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey, toggleDropdown }) {
     const [created, setCreated] = useState(false)
     async function createNewWallet() {
         let privateKeyAA;
         console.log("Private Key at check " + privateKey);
         if (typeof window !== 'undefined') {
+            toggleDropdown()
             let newPrivateKey = new ethers.Wallet(ethers.utils.randomBytes(32)).privateKey;
             localStorage.setItem('privateKeyAA', newPrivateKey);
             privateKeyAA = localStorage.getItem('privateKeyAA');

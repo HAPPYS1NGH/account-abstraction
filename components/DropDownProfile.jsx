@@ -60,6 +60,7 @@ function DropDownProfile(props) {
                         toggleNewAccount={toggleNewAccount}
                         privateKey={props.privateKey}
                         setPrivateKey={props.setPrivateKey}
+                        toggleDropdown={props.toggleDropdown}
                     />
                 )}
 
@@ -72,6 +73,7 @@ function DropDownProfile(props) {
                         privateKey={props.privateKey}
                         setPrivateKey={props.setPrivateKey}
                         config={props.config}
+                        toggleDropdown={props.toggleDropdown}
                     />
                 )}
             </div>

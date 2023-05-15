@@ -12,7 +12,7 @@ function Settings({ address, toggleDropdown, privateKey }) {
     function clearShowKey() {
         setShowKey(false);
         setShowKeyConfirmed(false)
-
+        toggleDropdown()
     }
     return (
         <div className="relative">

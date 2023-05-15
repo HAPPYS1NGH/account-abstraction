@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Presets } from "userop";
 import { ethers } from "ethers";
 
-function ImportAccount({ config, setPrivateKey, privateKey, toggleImportAccount }) {
+function ImportAccount({ config, setPrivateKey, privateKey, toggleImportAccount, toggleDropdown }) {
     const [importedPrivateKey, setImportedPrivateKey] = useState();
     const [fetch, setFetch] = useState(false)
 
@@ -12,6 +12,7 @@ function ImportAccount({ config, setPrivateKey, privateKey, toggleImportAccount 
             let privateKeyAA = localStorage.getItem('privateKeyAA');
             setPrivateKey(privateKeyAA);
             console.log("Private Key after changing " + privateKey);
+            toggleDropdown()
             setFetch(true);
         }
     }

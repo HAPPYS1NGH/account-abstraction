@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { QRCodeSVG } from 'qrcode.react';
 
 function Receive(props) {
@@ -6,6 +6,22 @@ function Receive(props) {
     function togglePopUp() {
         setPopUp(prev => !prev)
     }
+    const divRef = useRef(null);
+    const handleCopy = () => {
+        const range = document.createRange();
+        range.selectNode(divRef.current);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        try {
+            document.execCommand('copy');
+            console.log('Text copied!');
+        } catch (error) {
+            console.error('Copy failed:', error);
+        }
+
+        window.getSelection().removeAllRanges();
+    };
     return (
         <div className=''>
             {popUp
@@ -15,7 +31,7 @@ function Receive(props) {
                         <button className='absolute top-0 right-0 p-4 mr-5 hover:scale-150 duration-100 transition ' onClick={togglePopUp}>X</button>
                         <div className='p-20'>
                             <QRCodeSVG className='text-center mx-auto' value={`ethereum:${props.userAddress}`} />
-                            <h1 className='mt-5 p-5'>{props.userAddress}</h1>
+                            <h1 className='mt-5 p-5 hover:cursor-pointer' ref={divRef} onClick={handleCopy}>{props.userAddress}</h1>
                         </div>
                     </div>
                 </div>
