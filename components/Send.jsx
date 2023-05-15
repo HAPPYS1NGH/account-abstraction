@@ -14,42 +14,53 @@ function Send({ config, balance, init }) {
         setTransactionHash();
     }
     async function transfer() {
-        setTransferFunds(true)
-        let t = sendAddress;
-        let amt = amount;
-        let opts = "";
-        const paymaster = opts.withPM
-            ? Presets.Middleware.verifyingPaymaster(
-                config.paymaster.rpcUrl,
-                config.paymaster.context
-            )
-            : undefined;
-        const simpleAccount = await Presets.Builder.SimpleAccount.init(
-            new ethers.Wallet(config.signingKey),
-            config.rpcUrl,
-            config.entryPoint,
-            config.simpleAccountFactory,
-            paymaster
-        );
-        const client = await Client.init(config.rpcUrl, config.entryPoint);
+        if (parseFloat(amount) > parseFloat(balance)) {
+            alert("Not enough Funds")
+        }
+        else {
+            setTransferFunds(true)
+            try {
+                let t = sendAddress;
+                let amt = amount;
+                let opts = "";
+                const paymaster = opts.withPM
+                    ? Presets.Middleware.verifyingPaymaster(
+                        config.paymaster.rpcUrl,
+                        config.paymaster.context
+                    )
+                    : undefined;
+                const simpleAccount = await Presets.Builder.SimpleAccount.init(
+                    new ethers.Wallet(config.signingKey),
+                    config.rpcUrl,
+                    config.entryPoint,
+                    config.simpleAccountFactory,
+                    paymaster
+                );
+                const client = await Client.init(config.rpcUrl, config.entryPoint);
 
-        const target = ethers.utils.getAddress(t);
-        const value = ethers.utils.parseEther(amt);
-        const res = await client.sendUserOperation(
-            simpleAccount.execute(target, value, "0x"),
-            {
-                dryRun: opts.dryRun,
-                onBuild: (op) => console.log("Signed UserOperation:", op),
+                const target = ethers.utils.getAddress(t);
+                const value = ethers.utils.parseEther(amt);
+                const res = await client.sendUserOperation(
+                    simpleAccount.execute(target, value, "0x"),
+                    {
+                        dryRun: opts.dryRun,
+                        onBuild: (op) => console.log("Signed UserOperation:", op),
+                    }
+                );
+                console.log(`UserOpHash: ${res.userOpHash}`);
+                console.log("Waiting for transaction...");
+                const ev = await res.wait();
+                console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+                setTransactionHash(ev.transactionHash);
+                init()
+            } catch (error) {
+                console.log(error)
+                alert("Maybe less Funds in Account")
             }
-        );
-        console.log(`UserOpHash: ${res.userOpHash}`);
-
-        console.log("Waiting for transaction...");
-        const ev = await res.wait();
-        console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
-        setTransactionHash(ev.transactionHash);
-        init()
-        setTransferFunds(false)
+            finally {
+                setTransferFunds(false)
+            }
+        }
     }
     return (
         <div className=''>
