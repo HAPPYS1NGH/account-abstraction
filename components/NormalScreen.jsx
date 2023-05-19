@@ -82,7 +82,7 @@ export default function NormalScreen() {
         })
     }, [privateKey])
     return (
-        <div className="mx-44 bg-gray-100 rounded-lg h-full">
+        <div className="lg:mx-44 mx-4 bg-gray-100 rounded-lg h-full">
             <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
             <div className="bg-white p-10 rounded-xl shadow-lg ">
                 <Account balance={balance} refresh={refresh} address={userAddress} privateKey={privateKey} init={init} />

@@ -19,7 +19,7 @@ function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey, toggleD
     }
     return (
         <div class="backdrop-filter backdrop-blur-sm fixed inset-0 z-50">
-            <div className='fixed backdrop-filter backdrop-blur top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 max-w-md w-full'>
+            <div className='fixed backdrop-filter backdrop-blur top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 max-w-md w-full sm:max-w-sm'>
                 {created ? (
                     <div className='flex flex-col'>
                         <h1 className='text-xl font-bold mb-6'>Create New Wallet</h1>
@@ -47,7 +47,7 @@ function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey, toggleD
                         </button>
                         <button
                             onClick={toggleNewAccount}
-                            className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg ml-4'
+                            className='bg-gray-300 hover:bg-gray-100 text-black py-2 px-4 rounded-lg mt-4 sm:mt-0 ml-4'
                         >
                             Cancel
                         </button>
@@ -55,6 +55,7 @@ function CreateNewAccount({ toggleNewAccount, setPrivateKey, privateKey, toggleD
                 )}
             </div>
         </div>
+
 
 
     )
