@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import CreateNewAccount from './CreateNewAccount'
 import ImportAccount from './ImportAccount'
 import Image from 'next/image'
+import AccountBalance from './contexts/AccountBalance';
 
 function DropDownProfile(props) {
     const [newAccount, setNewAccount] = useState(false)
-    const [importAccount, setImportAccount] = useState(false)
+    const [importAccount, setImportAccount] = useState(false)  
+    const balance = useContext(AccountBalance)
+
     function toggleNewAccount() {
         setNewAccount(prev => !prev)
     }
@@ -47,7 +50,7 @@ function DropDownProfile(props) {
                 </div>
                 <div className='ml-3'>
                     <p className='text-gray-800 font-medium'>Account 1</p>
-                    <p className='text-gray-500'>{props.balance}</p>
+                    <p className='text-gray-500'>{balance}</p>
                 </div>
             </div>
             <hr />

@@ -26,7 +26,7 @@ const Header = (props) => {
                     />
                 </button>
                 {isDropdownOpen && (
-                    <DropDownProfile isDropdownOpen={isDropdownOpen} toggleDropdown={toggleDropdown} balance={props.balance} privateKey={props.privateKey} setPrivateKey={props.setPrivateKey} config={props.config} />
+                    <DropDownProfile isDropdownOpen={isDropdownOpen} toggleDropdown={toggleDropdown} privateKey={props.privateKey} setPrivateKey={props.setPrivateKey} config={props.config} />
                 )}
             </div>
         </div>

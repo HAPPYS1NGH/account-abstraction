@@ -73,6 +73,7 @@ export default function NormalScreen() {
     }
     useEffect(() => {
         init()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userAddress, balance, privateKey])
 
     useEffect(() => {
@@ -87,11 +88,11 @@ export default function NormalScreen() {
         <AccountInfo.Provider value={userAddress}>
             <AccountBalance.Provider value={balance}>
                 <div className="lg:mx-44 mx-4 bg-gray-100 rounded-lg h-full">
-                    <Header balance={balance} config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
+                    <Header config={config} privateKey={privateKey} setPrivateKey={setPrivateKey} />
                     <div className="bg-white p-10 rounded-xl shadow-lg ">
-                        <Account balance={balance} refresh={refresh} address={userAddress} privateKey={privateKey} init={init} />
+                        <Account balance={balance} refresh={refresh} privateKey={privateKey} init={init} />
                         <div className="flex flex-wrap justify-center gap-14 pt-10">
-                            <Send balance={balance} config={config} init={init} />
+                            <Send config={config} init={init} />
                             <Receive />
                         </div>
                     </div>

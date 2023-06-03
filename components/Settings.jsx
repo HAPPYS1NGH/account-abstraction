@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Link from 'next/link'
-function Settings({ address, toggleDropdown, privateKey }) {
+import AccountInfo from "./contexts/AccountInfo";
+
+function Settings({toggleDropdown, privateKey }) {
     const [showKey, setShowKey] = useState(false);
     const [showKeyConfirmed, setShowKeyConfirmed] = useState(false);
+    const address = useContext(AccountInfo)
+
     function toggleShowKey() {
         setShowKey(prev => !prev)
     }
