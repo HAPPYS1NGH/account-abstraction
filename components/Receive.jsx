@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { QRCodeSVG } from 'qrcode.react';
-
-function Receive(props) {
+import AccountInfo from './contexts/AccountInfo';
+function Receive() {
+    const userAddress = useContext(AccountInfo)
     const [popUp, setPopUp] = useState(false)
     function togglePopUp() {
         setPopUp(prev => !prev)
@@ -32,10 +33,10 @@ function Receive(props) {
                         </button>
                         <div className='lg:p-20'>
                             <div className='p-10 pb-5'>
-                                <QRCodeSVG className='text-center mx-auto' value={`ethereum:${props.userAddress}`} />
+                                <QRCodeSVG className='text-center mx-auto' value={`ethereum:${userAddress}`} />
                             </div>
                             <h1 className='mt-5 p-5 pb-14 lg:pb-0  hover:cursor-pointer lg:text-lg sm:text-sm whitespace-normal max-h-32 overflow-y-auto' ref={divRef} onClick={handleCopy}>
-                                {props.userAddress}
+                                {userAddress}
                             </h1>
                         </div>
                     </div>

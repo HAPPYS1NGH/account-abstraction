@@ -1,9 +1,11 @@
 import React from 'react'
 import { ethers } from "ethers";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Client, Presets } from "userop";
-function Send({ config, balance, init }) {
+import AccountBalance from './contexts/AccountBalance';
 
+function Send({ config, init }) {
+    const balance = useContext(AccountBalance)
     const [sendAddress, setSendAddress] = useState();
     const [amount, setAmount] = useState();
     const [transferFunds, setTransferFunds] = useState(false);

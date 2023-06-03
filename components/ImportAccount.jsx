@@ -17,7 +17,7 @@ function ImportAccount({ config, setPrivateKey, privateKey, toggleImportAccount,
         }
     }
     return (
-        <div class="backdrop-filter backdrop-blur-sm fixed inset-0 z-50">
+        <div className="backdrop-filter backdrop-blur-sm fixed inset-0 z-50">
             <div className='fixed backdrop-filter backdrop-blur top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 max-w-md w-full'>
                 <h1 className='text-lg font-bold mb-6'>Import Account</h1>
                 <div className="mb-4">
