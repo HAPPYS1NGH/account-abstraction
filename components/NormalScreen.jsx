@@ -2,6 +2,7 @@ import Account from "@/components/Account";
 import Header from "@/components/Header";
 import Receive from "@/components/Receive";
 import Send from "@/components/Send";
+import TransferERC20 from "@/components/TransferERC20";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { Presets } from "userop";
@@ -93,6 +94,7 @@ export default function NormalScreen() {
                         <Account balance={balance} refresh={refresh} privateKey={privateKey} init={init} />
                         <div className="flex flex-wrap justify-center gap-14 pt-10">
                             <Send config={config} init={init} />
+                            <TransferERC20 config={config} init={init} />
                             <Receive />
                         </div>
                     </div>
