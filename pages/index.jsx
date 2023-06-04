@@ -9,7 +9,7 @@ export default function Home() {
     let visit = localStorage.getItem('firstVisit') === "Visited";
     setFirstVisit(!visit)
     setLoading(false)
-  })
+  }, [])
 
   return (
     <div className="xl:px-90 md:px-4 sm:px-2 bg-gray-100 rounded-lg h-screen">
