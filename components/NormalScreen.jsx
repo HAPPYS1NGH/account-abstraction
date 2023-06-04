@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { Presets } from "userop";
 import AccountInfo from "./contexts/AccountInfo";
 import AccountBalance from "./contexts/AccountBalance";
-import ERC20Tokens from "./ERC20Tokens";
 import ERC20Record from "./ERC20Record";
 
 export default function NormalScreen() {
@@ -100,9 +99,7 @@ export default function NormalScreen() {
                         </div>
                     </div>
                     <div>
-                        {/* <ERC20Tokens /> */}
                         <div className="my-5 p-10 bg-white shadow-lg rounded-2xl">
-
                             <ERC20Record config={config} />
                             <TransferERC20 config={config} init={init} />
                         </div>
