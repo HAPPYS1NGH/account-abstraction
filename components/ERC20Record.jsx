@@ -51,7 +51,10 @@ function ERC20Record({ config }) {
             </div>
             {
                 info.balanceOf != null
+                    &&
+                    info.balanceOf != 0
                     ?
+
                     <div className='flex gap-6 my-4 bg-slate-300 rounded-lg p-4'>
                         <Link href="https://mumbai.polygonscan.com/token/0x0fa8781a83e46826621b3bc094ea2a0212e71b23" className='hover:underline'>{info.symbol}</Link>
                         <h1>{info.balanceOf}</h1>
