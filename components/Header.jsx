@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import DropDownProfile from './DropDownProfile';
-
+import Link from 'next/link';
 const Header = (props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -11,7 +11,8 @@ const Header = (props) => {
 
     return (
         <div className="flex items-center justify-between py-4">
-            <h1 className="text-xl font-bold">Happy Wallet</h1>
+            <Link href="/" className="text-xl font-bold">Happy Wallet</Link>
+            <Link href="/Guide" className='text-lg ml-4 font-medium'>Guide</Link>
             <div className="relative ml-auto">
                 <button
                     onClick={toggleDropdown}
@@ -25,8 +26,8 @@ const Header = (props) => {
                         className="w-8 h-8 rounded-full"
                     />
                 </button>
-                {isDropdownOpen && (
-                    <DropDownProfile isDropdownOpen={isDropdownOpen} toggleDropdown={toggleDropdown} privateKey={props.privateKey} setPrivateKey={props.setPrivateKey} config={props.config} />
+                {!props.disable && isDropdownOpen && (
+                    <DropDownProfile isDropdownOpen={isDropdownOpen} toggleDropdown={toggleDropdown} balance={props.balance} privateKey={props.privateKey} setPrivateKey={props.setPrivateKey} config={props.config} />
                 )}
             </div>
         </div>
